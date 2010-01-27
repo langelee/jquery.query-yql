@@ -46,6 +46,12 @@ Query YQL with Open Data Tables (custom URL):
       // do something with "data".
     });
 
+Query YQL with Query Parameters:
+    var statement = "select * from twitter.user.timeline where id=@username";
+    $.queryYQL(statement, {username:"hell2u"}, "all", function (data) {
+      // do something with "data".
+    });
+
 LICENSE
 =======
 

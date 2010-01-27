@@ -5,14 +5,14 @@
 <title>Test page for Query YQL</title>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
-google.load("jquery", "1.3.2");
+google.load("jquery", "1.4");
 </script>
 <script type="text/javascript" src="jquery.query-yql.js"></script>
 <script type="text/javascript">
 $(function () {
   var t = $("#content").empty();
-  var statement = "select * from feed where url='http://feeds.feedburner.com/hail2u/blog'";
-  $.queryYQL(statement, function (data) {
+  var statement = "select * from feed where url=@url";
+  $.queryYQL(statement, {url: 'http://feeds.feedburner.com/hail2u/blog'}, function (data) {
     var r = data.query.results;
     var ul = $("<ul/>");
     $.each(r.item, function () {

@@ -9,32 +9,33 @@
  */
 (function ($) {
   $.queryYQL = function (statement, type, envUrl, callback) {
+    var data = {};
+    
     if ($.isFunction(type)) {
       callback = type;
+      type     = "json";
+    } else if ($.isPlainObject(type)) {
+      data     = type;
       type     = "json";
     } else if (!type.match(/(json|xml)/)) {
       callback = envUrl;
       envUrl   = type;
       type     = "json";
-    } else if ($.isFunction(envUrl)) {
+    }
+    
+    if ($.isFunction(envUrl)) {
       callback = envUrl;
       envUrl   = undefined;
-    }
-
-    if (envUrl === "all") {
+    } else if (envUrl === "all") {
       envUrl = "http://datatables.org/alltables.env";
     }
-
-    var url = "http://query.yahooapis.com/v1/public/yql?callback=?";
-    var data = {
-      format: type,
-      q:      statement
-    };
-
-    if (envUrl) {
-      data.env = envUrl;
-    }
-
-    return $.get(url, data, callback, "json");
+    
+    // Always override format and query
+    data.format = type;
+    data.q      = statement;
+    if (envUrl) data.env = envUrl;
+    
+    return $.get($.queryYQL.endpoint, data, callback, "json");
   };
+  $.queryYQL.endpoint = "http://query.yahooapis.com/v1/public/yql?callback=?";
 })(jQuery);
